@@ -1,22 +1,13 @@
-/**@jsx jsx */
-import { jsx, css } from '@emotion/core'
+import React from 'react'
 
-import SearchBar from './components/SearchBar'
-import Cards from './components/Cards'
+import Header from 'components/Header'
+import Body from 'components/Body'
 
 const App = () => (
-  <div css={containerCss}>
-    <SearchBar />
-    <Cards />
+  <div>
+    <Header />
+    <Body />
   </div>
 )
-
-const containerCss = css`
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`
 
 export default App
