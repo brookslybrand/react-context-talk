@@ -3,9 +3,9 @@ import { jsx, css } from '@emotion/core'
 
 import Panels from './Panels'
 
-const Body = () => (
+const Body = ({ items }) => (
   <div css={bodyCss}>
-    <Panels />
+    <Panels items={items} />
   </div>
 )
 

@@ -8,28 +8,38 @@ function callback(key) {
   console.log(key)
 }
 
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`
+const getActiveKeys = items =>
+  items.reduce(
+    (activeKey, { key, expanded }) =>
+      expanded ? activeKey.concat(key) : activeKey,
+    []
+  )
 
-const Panels = () => (
-  <Collapse onChange={callback} css={cardCss} activeKey={['1', '2', '3']}>
-    {Array.from({ length: 20 }).map((_, i) => {
-      i += 1
-      return (
-        <Panel header={`This is panel header ${i}`} key={i.toString()}>
-          <Collapse bordered={false}>
-            <Panel header="This is panel nest panel" key={i.toString()}>
-              <p>{text}</p>
-            </Panel>
-          </Collapse>
+const Panels = ({ items }) => {
+  return (
+    <Collapse
+      onChange={callback}
+      css={cardCss}
+      activeKey={getActiveKeys(items)}
+    >
+      {items.map(({ key, title, subItems }) => (
+        <Panel header={title} key={key}>
+          {subItems.map(({ key, title, description }) => (
+            <Collapse
+              key={key}
+              bordered={false}
+              activeKey={getActiveKeys(subItems)}
+            >
+              <Panel header={title} key={key}>
+                <p>{description}</p>
+              </Panel>
+            </Collapse>
+          ))}
         </Panel>
-      )
-    })}
-  </Collapse>
-)
+      ))}
+    </Collapse>
+  )
+}
 
 const cardCss = css`
   width: 70%;
