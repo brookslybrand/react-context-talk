@@ -1,13 +1,13 @@
 export default Array.from({ length: 20 }).map((_, index) => {
-  const key = index.toString()
+  const id = index.toString()
   return {
-    key,
-    title: `Item ${key}`,
+    id,
+    title: `Item ${id}`,
     subItems: [
       {
-        key,
-        title: `Sub Item ${key}`,
-        description: `This is the description for Sub Item ${key}`
+        id,
+        title: `Sub Item ${id}`,
+        description: `This is the description for Sub Item ${id}`
       }
     ]
   }

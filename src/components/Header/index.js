@@ -4,15 +4,21 @@ import { jsx, css } from '@emotion/core'
 import SearchBar from './SearchBar'
 import { Affix, Card, Icon } from 'antd'
 
-const Header = ({ expandAll = false }) => {
+const Header = ({ expandAll = false, items, setAllExpanded }) => {
+  // find if anything is expanded
+  const someExpanded = items.reduce(
+    (someExpanded, { expanded, subItems }) =>
+      someExpanded || expanded || subItems.some(({ expanded }) => expanded),
+    false
+  )
   return (
     <Affix>
       <Card css={headerCss}>
         <SearchBar />
         <Icon
           type="double-right"
-          // onClick={() => setExpandAll(prev => !prev)}
-          css={expandAllCss(expandAll)}
+          onClick={() => setAllExpanded(!someExpanded)}
+          css={expandAllCss(!someExpanded)}
         />
       </Card>
     </Affix>

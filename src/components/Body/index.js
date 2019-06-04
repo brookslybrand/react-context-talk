@@ -1,11 +1,15 @@
 /**@jsx jsx */
 import { jsx, css } from '@emotion/core'
 
-import Panels from './Panels'
+import Items from './Items'
 
-const Body = ({ items }) => (
+const Body = ({ items, toggleItemExpanded, toggleSubItemExpanded }) => (
   <div css={bodyCss}>
-    <Panels items={items} />
+    <Items
+      items={items}
+      toggleItemExpanded={toggleItemExpanded}
+      toggleSubItemExpanded={toggleSubItemExpanded}
+    />
   </div>
 )
 
