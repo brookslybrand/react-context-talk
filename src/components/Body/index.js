@@ -3,10 +3,20 @@ import { jsx, css } from '@emotion/core'
 
 import Items from './Items'
 
-const Body = ({ items, toggleItemExpanded, toggleSubItemExpanded }) => (
+const Body = ({
+  items,
+  setItemTitle,
+  setSubItemTitle,
+  toggleItemExpanded,
+  setSubItemDescription,
+  toggleSubItemExpanded
+}) => (
   <div css={bodyCss}>
     <Items
       items={items}
+      setItemTitle={setItemTitle}
+      setSubItemTitle={setSubItemTitle}
+      setSubItemDescription={setSubItemDescription}
       toggleItemExpanded={toggleItemExpanded}
       toggleSubItemExpanded={toggleSubItemExpanded}
     />

@@ -1,6 +1,6 @@
 /**@jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { Collapse } from 'antd'
+import { Collapse, Input } from 'antd'
 
 import SubItems from './SubItems'
 
@@ -8,7 +8,14 @@ import { getActiveKeys } from './helpers'
 
 const Panel = Collapse.Panel
 
-const Items = ({ items, toggleItemExpanded, toggleSubItemExpanded }) => {
+const Items = ({
+  items,
+  setItemTitle,
+  setSubItemTitle,
+  setSubItemDescription,
+  toggleItemExpanded,
+  toggleSubItemExpanded
+}) => {
   return (
     <Collapse
       onChange={ids => {
@@ -18,9 +25,22 @@ const Items = ({ items, toggleItemExpanded, toggleSubItemExpanded }) => {
       activeKey={getActiveKeys(items)}
     >
       {items.map(({ id, title, subItems }) => (
-        <Panel header={title} key={id} onChange={() => console.log('comone ')}>
+        <Panel
+          key={id}
+          header={
+            <Input
+              placeholder="Add a title"
+              value={title}
+              onChange={e => setItemTitle(id)(e.target.value)}
+              css={inputCss}
+            />
+          }
+          onChange={() => console.log('comone ')}
+        >
           <SubItems
             subItems={subItems}
+            setSubItemTitle={setSubItemTitle(id)}
+            setSubItemDescription={setSubItemDescription(id)}
             toggleSubItemExpanded={toggleSubItemExpanded(id)}
           />
         </Panel>
@@ -32,6 +52,10 @@ const Items = ({ items, toggleItemExpanded, toggleSubItemExpanded }) => {
 const cardCss = css`
   width: 70%;
   margin: 1rem 0;
+`
+
+const inputCss = css`
+  width: auto;
 `
 
 export default Items
