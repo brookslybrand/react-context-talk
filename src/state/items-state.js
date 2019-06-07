@@ -1,7 +1,7 @@
 const SET_ALL_EXPANDED = 'SET_ALL_EXPANDED'
 const SET_ITEM_TITLE = 'SET_ITEM_TITLE'
 const SET_SUB_ITEM_TITLE = 'SET_SUB_ITEM_TITLE'
-const SET_SUB_ITEM_DESCRIPTION = 'SET_SUB_ITEM_DESCRIPTION'
+const SET_SUB_ITEM_BODY = 'SET_SUB_ITEM_BODY'
 const TOGGLE_ITEM_EXPANDED = 'TOGGLE_ITEM_EXPANDED'
 const TOGGLE_SUB_ITEM_EXPANDED = 'TOGGLE_SUB_ITEM_EXPANDED'
 
@@ -42,8 +42,8 @@ const itemsReducer = (items, action) => {
       itemsCopy.splice(itemIndex, 1, newItem)
       return itemsCopy
     }
-    case SET_SUB_ITEM_DESCRIPTION: {
-      const { itemId, subItemId, description } = action
+    case SET_SUB_ITEM_BODY: {
+      const { itemId, subItemId, body } = action
       const itemIndex = findIndexById(items)(itemId)
       // bail if item not found
       if (itemIndex === -1) return items
@@ -51,7 +51,7 @@ const itemsReducer = (items, action) => {
       const subItemsCopy = [...item.subItems]
       const subItemIndex = findIndexById(subItemsCopy)(subItemId)
       const subItem = subItemsCopy[subItemIndex]
-      subItemsCopy.splice(subItemIndex, 1, { ...subItem, description })
+      subItemsCopy.splice(subItemIndex, 1, { ...subItem, body })
       const itemsCopy = [...items]
       const newItem = { ...item, subItems: subItemsCopy }
       itemsCopy.splice(itemIndex, 1, newItem)
@@ -92,13 +92,19 @@ const itemsReducer = (items, action) => {
   }
 }
 
+const DEFAULT_EXPANDED = true
+
 const init = initialState =>
   initialState.map(item => {
     const updatedSubItems = item.subItems.map(subItem => ({
       ...subItem,
-      expanded: false
+      expanded: DEFAULT_EXPANDED
     }))
-    const updatedItem = { ...item, subItems: updatedSubItems, expanded: false }
+    const updatedItem = {
+      ...item,
+      subItems: updatedSubItems,
+      expanded: DEFAULT_EXPANDED
+    }
     return updatedItem
   })
 
@@ -125,11 +131,11 @@ const setSubItemTitle = itemId => subItemId => title => ({
   title
 })
 
-const setSubItemDescription = itemId => subItemId => description => ({
-  type: SET_SUB_ITEM_DESCRIPTION,
+const setSubItemBody = itemId => subItemId => body => ({
+  type: SET_SUB_ITEM_BODY,
   itemId,
   subItemId,
-  description
+  body
 })
 
 const toggleItemExpanded = itemIds => ({
@@ -148,7 +154,7 @@ export {
   init,
   setAllExpanded,
   setSubItemTitle,
-  setSubItemDescription,
+  setSubItemBody,
   setItemTitle,
   toggleItemExpanded,
   toggleSubItemExpanded

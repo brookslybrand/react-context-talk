@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 /**@jsx jsx */
 import { jsx, css } from '@emotion/core'
 import { Collapse, Input } from 'antd'
@@ -12,7 +13,7 @@ const Items = ({
   items,
   setItemTitle,
   setSubItemTitle,
-  setSubItemDescription,
+  setSubItemBody,
   toggleItemExpanded,
   toggleSubItemExpanded
 }) => {
@@ -25,6 +26,19 @@ const Items = ({
       activeKey={getActiveKeys(items)}
     >
       {items.map(({ id, title, subItems }) => (
+        // <span
+        //   css={css`
+        //     display: flex;
+        //     flex-direction: column;
+        //   `}
+        // >
+        //   <div
+        //     css={css`
+        //       height: 20px;
+        //       width: 10px;
+        //       background: blue;
+        //     `}
+        //   />
         <Panel
           key={id}
           header={
@@ -40,17 +54,19 @@ const Items = ({
           <SubItems
             subItems={subItems}
             setSubItemTitle={setSubItemTitle(id)}
-            setSubItemDescription={setSubItemDescription(id)}
+            setSubItemBody={setSubItemBody(id)}
             toggleSubItemExpanded={toggleSubItemExpanded(id)}
           />
         </Panel>
+        // </span>
       ))}
     </Collapse>
   )
 }
 
 const cardCss = css`
-  width: 70%;
+  min-width: 300px;
+  width: 50%;
   margin: 1rem 0;
 `
 

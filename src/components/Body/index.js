@@ -8,7 +8,7 @@ const Body = ({
   setItemTitle,
   setSubItemTitle,
   toggleItemExpanded,
-  setSubItemDescription,
+  setSubItemBody,
   toggleSubItemExpanded
 }) => (
   <div css={bodyCss}>
@@ -16,7 +16,7 @@ const Body = ({
       items={items}
       setItemTitle={setItemTitle}
       setSubItemTitle={setSubItemTitle}
-      setSubItemDescription={setSubItemDescription}
+      setSubItemBody={setSubItemBody}
       toggleItemExpanded={toggleItemExpanded}
       toggleSubItemExpanded={toggleSubItemExpanded}
     />

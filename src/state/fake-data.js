@@ -7,7 +7,7 @@ export default Array.from({ length: 20 }).map((_, index) => {
       {
         id,
         title: `Sub Item ${id}`,
-        description: `This is the description for Sub Item ${id}`
+        body: `This is the body for Sub Item ${id}`
       }
     ]
   }

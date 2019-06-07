@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react'
+import React, { useReducer } from 'react'
 
 import Header from 'components/Header'
 import Body from 'components/Body'
@@ -10,15 +10,13 @@ import {
   setAllExpanded,
   setItemTitle,
   setSubItemTitle,
-  setSubItemDescription,
+  setSubItemBody,
   toggleItemExpanded,
   toggleSubItemExpanded
 } from 'state/items-state'
 
 const App = () => {
   const [items, dispatch] = useReducer(itemsReducer, fakeData, init)
-
-  useEffect(() => dispatch({ type: 'test' }), [])
 
   const handleSetAllExpanded = expanded => dispatch(setAllExpanded(expanded))
 
@@ -28,8 +26,8 @@ const App = () => {
   const handleSetSubItemTitle = itemId => subItemId => title =>
     dispatch(setSubItemTitle(itemId)(subItemId)(title))
 
-  const handleSetSubItemDescription = itemId => subItemId => description =>
-    dispatch(setSubItemDescription(itemId)(subItemId)(description))
+  const handleSetSubItemBody = itemId => subItemId => body =>
+    dispatch(setSubItemBody(itemId)(subItemId)(body))
 
   const handleToggleItemExpanded = itemIds =>
     dispatch(toggleItemExpanded(itemIds))
@@ -44,7 +42,7 @@ const App = () => {
         items={items}
         setItemTitle={handleSetItemTitle}
         setSubItemTitle={handleSetSubItemTitle}
-        setSubItemDescription={handleSetSubItemDescription}
+        setSubItemBody={handleSetSubItemBody}
         toggleItemExpanded={handleToggleItemExpanded}
         toggleSubItemExpanded={handleToggleSubItemExpanded}
       />
