@@ -2,7 +2,7 @@
 import { jsx, css } from '@emotion/core'
 import { Collapse, Input, Icon } from 'antd'
 
-import { ADD_ICON } from './constants'
+import { ADD_ICON_KEY, GRAY } from './constants'
 import { getActiveKeys } from './helpers'
 
 const Panel = Collapse.Panel
@@ -19,11 +19,11 @@ const SubItems = ({
   return (
     <Collapse
       bordered={false}
-      activeKey={getActiveKeys(subItems)}
+      activeKey={getActiveKeys([ADD_ICON_KEY])(subItems)}
       onChange={ids => toggleSubItemExpanded(ids)}
       css={collapseCss}
     >
-      <Panel key={ADD_ICON} showArrow={false} css={firstIconCss}>
+      <Panel key={ADD_ICON_KEY} showArrow={false} css={firstIconCss}>
         <Icon type="plus" onClick={() => addSubItem(0)} css={iconCss} />
       </Panel>
 
@@ -66,8 +66,6 @@ const SubItems = ({
     </Collapse>
   )
 }
-
-const GRAY = '#d9d9d9'
 
 const collapseCss = css`
   width: calc(100% - 1px - 1rem);

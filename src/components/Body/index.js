@@ -1,9 +1,10 @@
 /**@jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { Collapse, Input } from 'antd'
+import { Collapse, Input, Icon } from 'antd'
 
 import SubItems from './SubItems'
 
+import { ADD_ICON_KEY, GRAY } from './constants'
 import { getActiveKeys } from './helpers'
 
 const Panel = Collapse.Panel
@@ -11,6 +12,7 @@ const Panel = Collapse.Panel
 const Items = ({
   items,
   setItemTitle,
+  deleteItem,
   setSubItemTitle,
   setSubItemBody,
   addSubItem,
@@ -18,27 +20,44 @@ const Items = ({
   toggleItemExpanded,
   toggleSubItemExpanded
 }) => {
+  const addKeys = Array.from({ length: items.length }).map((_, index) =>
+    addKey(index)
+  )
+
   return (
     <div css={bodyCss}>
       <Collapse
         onChange={ids => {
           toggleItemExpanded(ids)
         }}
-        css={cardCss}
-        activeKey={getActiveKeys(items)}
+        css={collapseCss}
+        activeKey={getActiveKeys(addKeys)(items)}
       >
-        {items.map(({ id, title, subItems }, itemIndex) => (
+        <Panel key={addKeys[0]} showArrow={false} css={addIconCss}>
+          <Icon type="plus" onClick={() => addSubItem(0)} css={iconCss} />
+        </Panel>
+        {items.map(({ id, title, subItems }, itemIndex) => [
           <Panel
             key={id}
             header={
               <Input
                 placeholder="Add a title"
                 value={title}
+                onClick={e => e.stopPropagation()}
                 onChange={e => setItemTitle(id)(e.target.value)}
                 css={inputCss}
               />
             }
             onChange={() => console.log('comone ')}
+            extra={
+              <Icon
+                type="delete"
+                onClick={e => {
+                  e.stopPropagation()
+                  deleteItem(itemIndex)
+                }}
+              />
+            }
           >
             <SubItems
               subItems={subItems}
@@ -48,12 +67,21 @@ const Items = ({
               deleteSubItem={deleteSubItem(itemIndex)}
               toggleSubItemExpanded={toggleSubItemExpanded(id)}
             />
+          </Panel>,
+          <Panel
+            key={addKeys[itemIndex + 1]}
+            showArrow={false}
+            css={addIconCss}
+          >
+            <Icon type="plus" onClick={() => addSubItem(0)} css={iconCss} />
           </Panel>
-        ))}
+        ])}
       </Collapse>
     </div>
   )
 }
+
+const addKey = index => `${ADD_ICON_KEY}_${index}`
 
 const bodyCss = css`
   width: 100%;
@@ -63,10 +91,31 @@ const bodyCss = css`
   align-items: center;
 `
 
-const cardCss = css`
+const collapseCss = css`
   min-width: 300px;
   width: 50%;
   margin: 1rem 0;
+`
+
+const addIconCss = css`
+  background: white;
+  display: flex;
+  justify-content: center;
+  padding-left: 12px;
+  > div {
+    padding: 0 !important;
+    border: 0 !important;
+    > div {
+      padding: 0.5rem !important;
+    }
+  }
+`
+const iconCss = css`
+  font-size: 24px;
+  color: ${GRAY};
+  :hover {
+    color: #505050;
+  }
 `
 
 const inputCss = css`

@@ -1,10 +1,10 @@
-import { ADD_ICON } from './constants'
-
-const getActiveKeys = items =>
-  items.reduce(
-    (activeKey, { id, expanded }) =>
-      expanded ? activeKey.concat(id) : activeKey,
-    [ADD_ICON]
+const getActiveKeys = alwaysExpandedKeys => items =>
+  alwaysExpandedKeys.concat(
+    items.reduce(
+      (activeKey, { id, expanded }) =>
+        expanded ? activeKey.concat(id) : activeKey,
+      []
+    )
   )
 
 export { getActiveKeys }
