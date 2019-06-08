@@ -9,8 +9,8 @@ import {
   init,
   setAllExpanded,
   setItemTitle,
-  setSubItemTitle,
-  setSubItemBody,
+  setSubItemAttribute,
+  addSubItem,
   toggleItemExpanded,
   toggleSubItemExpanded
 } from 'state/items-state'
@@ -23,11 +23,15 @@ const App = () => {
   const handleSetItemTitle = itemId => title =>
     dispatch(setItemTitle(itemId)(title))
 
-  const handleSetSubItemTitle = itemId => subItemId => title =>
-    dispatch(setSubItemTitle(itemId)(subItemId)(title))
+  const handleSetSubItemTitle = itemId => subItemId => title => {
+    dispatch(setSubItemAttribute(itemId)(subItemId)({ title: title }))
+  }
 
   const handleSetSubItemBody = itemId => subItemId => body =>
-    dispatch(setSubItemBody(itemId)(subItemId)(body))
+    dispatch(setSubItemAttribute(itemId)(subItemId)({ body }))
+
+  const handleAddSubItem = itemIndex => subItemIndex =>
+    dispatch(addSubItem(itemIndex)(subItemIndex))
 
   const handleToggleItemExpanded = itemIds =>
     dispatch(toggleItemExpanded(itemIds))
@@ -43,6 +47,7 @@ const App = () => {
         setItemTitle={handleSetItemTitle}
         setSubItemTitle={handleSetSubItemTitle}
         setSubItemBody={handleSetSubItemBody}
+        addSubItem={handleAddSubItem}
         toggleItemExpanded={handleToggleItemExpanded}
         toggleSubItemExpanded={handleToggleSubItemExpanded}
       />

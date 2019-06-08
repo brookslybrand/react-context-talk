@@ -1,7 +1,9 @@
+import { findIndexById, createSubItem } from './helpers'
+
 const SET_ALL_EXPANDED = 'SET_ALL_EXPANDED'
 const SET_ITEM_TITLE = 'SET_ITEM_TITLE'
-const SET_SUB_ITEM_TITLE = 'SET_SUB_ITEM_TITLE'
-const SET_SUB_ITEM_BODY = 'SET_SUB_ITEM_BODY'
+const SET_SUB_ITEM_ATTRIBUTE = 'SET_SUB_ITEM_ATTRIBUTE'
+const ADD_SUB_ITEM = 'ADD_SUB_ITEM'
 const TOGGLE_ITEM_EXPANDED = 'TOGGLE_ITEM_EXPANDED'
 const TOGGLE_SUB_ITEM_EXPANDED = 'TOGGLE_SUB_ITEM_EXPANDED'
 
@@ -27,8 +29,8 @@ const itemsReducer = (items, action) => {
       itemsCopy.splice(itemIndex, 1, { ...item, title })
       return itemsCopy
     }
-    case SET_SUB_ITEM_TITLE: {
-      const { itemId, subItemId, title } = action
+    case SET_SUB_ITEM_ATTRIBUTE: {
+      const { itemId, subItemId, attribute } = action
       const itemIndex = findIndexById(items)(itemId)
       // bail if item not found
       if (itemIndex === -1) return items
@@ -36,25 +38,23 @@ const itemsReducer = (items, action) => {
       const subItemsCopy = [...item.subItems]
       const subItemIndex = findIndexById(subItemsCopy)(subItemId)
       const subItem = subItemsCopy[subItemIndex]
-      subItemsCopy.splice(subItemIndex, 1, { ...subItem, title })
+      subItemsCopy.splice(subItemIndex, 1, { ...subItem, ...attribute })
       const itemsCopy = [...items]
       const newItem = { ...item, subItems: subItemsCopy }
       itemsCopy.splice(itemIndex, 1, newItem)
       return itemsCopy
     }
-    case SET_SUB_ITEM_BODY: {
-      const { itemId, subItemId, body } = action
-      const itemIndex = findIndexById(items)(itemId)
-      // bail if item not found
-      if (itemIndex === -1) return items
-      const item = items[itemIndex]
-      const subItemsCopy = [...item.subItems]
-      const subItemIndex = findIndexById(subItemsCopy)(subItemId)
-      const subItem = subItemsCopy[subItemIndex]
-      subItemsCopy.splice(subItemIndex, 1, { ...subItem, body })
+    case ADD_SUB_ITEM: {
+      const { itemIndex, subItemIndex } = action
       const itemsCopy = [...items]
-      const newItem = { ...item, subItems: subItemsCopy }
-      itemsCopy.splice(itemIndex, 1, newItem)
+      const item = itemsCopy[itemIndex]
+      const subItemsCopy = [...item.subItems]
+      const newSubItem = {
+        ...createSubItem(subItemsCopy),
+        expanded: DEFAULT_EXPANDED
+      }
+      subItemsCopy.splice(subItemIndex + 1, 0, newSubItem)
+      itemsCopy.splice(itemIndex, 1, { ...item, subItems: subItemsCopy })
       return itemsCopy
     }
     case TOGGLE_ITEM_EXPANDED: {
@@ -108,9 +108,6 @@ const init = initialState =>
     return updatedItem
   })
 
-const findIndexById = arr => idToFind =>
-  arr.findIndex(({ id }) => id === idToFind)
-
 // actions
 
 const setAllExpanded = expanded => ({
@@ -124,18 +121,17 @@ const setItemTitle = itemId => title => ({
   title
 })
 
-const setSubItemTitle = itemId => subItemId => title => ({
-  type: SET_SUB_ITEM_TITLE,
+const setSubItemAttribute = itemId => subItemId => attribute => ({
+  type: SET_SUB_ITEM_ATTRIBUTE,
   itemId,
   subItemId,
-  title
+  attribute
 })
 
-const setSubItemBody = itemId => subItemId => body => ({
-  type: SET_SUB_ITEM_BODY,
-  itemId,
-  subItemId,
-  body
+const addSubItem = itemIndex => subItemIndex => ({
+  type: ADD_SUB_ITEM,
+  itemIndex,
+  subItemIndex
 })
 
 const toggleItemExpanded = itemIds => ({
@@ -153,9 +149,9 @@ export {
   itemsReducer,
   init,
   setAllExpanded,
-  setSubItemTitle,
-  setSubItemBody,
   setItemTitle,
+  setSubItemAttribute,
+  addSubItem,
   toggleItemExpanded,
   toggleSubItemExpanded
 }

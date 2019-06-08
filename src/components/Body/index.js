@@ -1,27 +1,57 @@
 /**@jsx jsx */
 import { jsx, css } from '@emotion/core'
+import { Collapse, Input } from 'antd'
 
-import Items from './Items'
+import SubItems from './SubItems'
 
-const Body = ({
+import { getActiveKeys } from './helpers'
+
+const Panel = Collapse.Panel
+
+const Items = ({
   items,
   setItemTitle,
   setSubItemTitle,
-  toggleItemExpanded,
   setSubItemBody,
+  addSubItem,
+  toggleItemExpanded,
   toggleSubItemExpanded
-}) => (
-  <div css={bodyCss}>
-    <Items
-      items={items}
-      setItemTitle={setItemTitle}
-      setSubItemTitle={setSubItemTitle}
-      setSubItemBody={setSubItemBody}
-      toggleItemExpanded={toggleItemExpanded}
-      toggleSubItemExpanded={toggleSubItemExpanded}
-    />
-  </div>
-)
+}) => {
+  return (
+    <div css={bodyCss}>
+      <Collapse
+        onChange={ids => {
+          toggleItemExpanded(ids)
+        }}
+        css={cardCss}
+        activeKey={getActiveKeys(items)}
+      >
+        {items.map(({ id, title, subItems }, itemIndex) => (
+          <Panel
+            key={id}
+            header={
+              <Input
+                placeholder="Add a title"
+                value={title}
+                onChange={e => setItemTitle(id)(e.target.value)}
+                css={inputCss}
+              />
+            }
+            onChange={() => console.log('comone ')}
+          >
+            <SubItems
+              subItems={subItems}
+              setSubItemTitle={setSubItemTitle(id)}
+              setSubItemBody={setSubItemBody(id)}
+              addSubItem={addSubItem(itemIndex)}
+              toggleSubItemExpanded={toggleSubItemExpanded(id)}
+            />
+          </Panel>
+        ))}
+      </Collapse>
+    </div>
+  )
+}
 
 const bodyCss = css`
   width: 100%;
@@ -31,4 +61,14 @@ const bodyCss = css`
   align-items: center;
 `
 
-export default Body
+const cardCss = css`
+  min-width: 300px;
+  width: 50%;
+  margin: 1rem 0;
+`
+
+const inputCss = css`
+  width: auto;
+`
+
+export default Items
