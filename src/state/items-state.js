@@ -4,6 +4,7 @@ const SET_ALL_EXPANDED = 'SET_ALL_EXPANDED'
 const SET_ITEM_TITLE = 'SET_ITEM_TITLE'
 const SET_SUB_ITEM_ATTRIBUTE = 'SET_SUB_ITEM_ATTRIBUTE'
 const ADD_SUB_ITEM = 'ADD_SUB_ITEM'
+const DELETE_SUB_ITEM = 'DELETE_SUB_ITEM'
 const TOGGLE_ITEM_EXPANDED = 'TOGGLE_ITEM_EXPANDED'
 const TOGGLE_SUB_ITEM_EXPANDED = 'TOGGLE_SUB_ITEM_EXPANDED'
 
@@ -53,7 +54,16 @@ const itemsReducer = (items, action) => {
         ...createSubItem(subItemsCopy),
         expanded: DEFAULT_EXPANDED
       }
-      subItemsCopy.splice(subItemIndex + 1, 0, newSubItem)
+      subItemsCopy.splice(subItemIndex, 0, newSubItem)
+      itemsCopy.splice(itemIndex, 1, { ...item, subItems: subItemsCopy })
+      return itemsCopy
+    }
+    case DELETE_SUB_ITEM: {
+      const { itemIndex, subItemIndex } = action
+      const itemsCopy = [...items]
+      const item = itemsCopy[itemIndex]
+      const subItemsCopy = [...item.subItems]
+      subItemsCopy.splice(subItemIndex, 1)
       itemsCopy.splice(itemIndex, 1, { ...item, subItems: subItemsCopy })
       return itemsCopy
     }
@@ -134,6 +144,12 @@ const addSubItem = itemIndex => subItemIndex => ({
   subItemIndex
 })
 
+const deleteSubItem = itemIndex => subItemIndex => ({
+  type: DELETE_SUB_ITEM,
+  itemIndex,
+  subItemIndex
+})
+
 const toggleItemExpanded = itemIds => ({
   type: TOGGLE_ITEM_EXPANDED,
   itemIds
@@ -152,6 +168,7 @@ export {
   setItemTitle,
   setSubItemAttribute,
   addSubItem,
+  deleteSubItem,
   toggleItemExpanded,
   toggleSubItemExpanded
 }

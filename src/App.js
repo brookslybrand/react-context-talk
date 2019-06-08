@@ -11,6 +11,7 @@ import {
   setItemTitle,
   setSubItemAttribute,
   addSubItem,
+  deleteSubItem,
   toggleItemExpanded,
   toggleSubItemExpanded
 } from 'state/items-state'
@@ -33,6 +34,10 @@ const App = () => {
   const handleAddSubItem = itemIndex => subItemIndex =>
     dispatch(addSubItem(itemIndex)(subItemIndex))
 
+  const handleDeleteSubItem = itemIndex => subItemIndex => {
+    dispatch(deleteSubItem(itemIndex)(subItemIndex))
+  }
+
   const handleToggleItemExpanded = itemIds =>
     dispatch(toggleItemExpanded(itemIds))
 
@@ -48,6 +53,7 @@ const App = () => {
         setSubItemTitle={handleSetSubItemTitle}
         setSubItemBody={handleSetSubItemBody}
         addSubItem={handleAddSubItem}
+        deleteSubItem={handleDeleteSubItem}
         toggleItemExpanded={handleToggleItemExpanded}
         toggleSubItemExpanded={handleToggleSubItemExpanded}
       />

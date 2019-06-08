@@ -14,6 +14,7 @@ const Items = ({
   setSubItemTitle,
   setSubItemBody,
   addSubItem,
+  deleteSubItem,
   toggleItemExpanded,
   toggleSubItemExpanded
 }) => {
@@ -44,6 +45,7 @@ const Items = ({
               setSubItemTitle={setSubItemTitle(id)}
               setSubItemBody={setSubItemBody(id)}
               addSubItem={addSubItem(itemIndex)}
+              deleteSubItem={deleteSubItem(itemIndex)}
               toggleSubItemExpanded={toggleSubItemExpanded(id)}
             />
           </Panel>

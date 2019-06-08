@@ -2,6 +2,7 @@
 import { jsx, css } from '@emotion/core'
 import { Collapse, Input, Icon } from 'antd'
 
+import { ADD_ICON } from './constants'
 import { getActiveKeys } from './helpers'
 
 const Panel = Collapse.Panel
@@ -12,6 +13,7 @@ const SubItems = ({
   setSubItemTitle,
   setSubItemBody,
   addSubItem,
+  deleteSubItem,
   toggleSubItemExpanded
 }) => {
   return (
@@ -21,8 +23,13 @@ const SubItems = ({
       onChange={ids => toggleSubItemExpanded(ids)}
       css={collapseCss}
     >
+      <Panel key={ADD_ICON} showArrow={false} css={firstIconCss}>
+        <Icon type="plus" onClick={() => addSubItem(0)} css={iconCss} />
+      </Panel>
+
       {subItems.map(({ id, title, body }, subItemIndex) => (
         <Panel
+          key={id}
           header={
             <Input
               placeholder="Add a title"
@@ -32,7 +39,15 @@ const SubItems = ({
               css={inputCss}
             />
           }
-          key={id}
+          extra={
+            <Icon
+              type="delete"
+              onClick={e => {
+                e.stopPropagation()
+                deleteSubItem(subItemIndex)
+              }}
+            />
+          }
           css={panelCss}
         >
           <TextArea
@@ -43,7 +58,7 @@ const SubItems = ({
           />
           <Icon
             type="plus"
-            onClick={() => addSubItem(subItemIndex)}
+            onClick={() => addSubItem(subItemIndex + 1)}
             css={iconCss}
           />
         </Panel>
@@ -59,6 +74,14 @@ const collapseCss = css`
   margin-left: 1rem;
   display: flex;
   flex-direction: column;
+`
+
+const firstIconCss = css`
+  display: flex;
+  justify-content: center;
+  > div {
+    padding: 0 !important;
+  }
 `
 
 const panelCss = css`
