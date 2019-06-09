@@ -12,6 +12,7 @@ const Panel = Collapse.Panel
 const Items = ({
   items,
   setItemTitle,
+  addItem,
   deleteItem,
   setSubItemTitle,
   setSubItemBody,
@@ -34,7 +35,7 @@ const Items = ({
         activeKey={getActiveKeys(addKeys)(items)}
       >
         <Panel key={addKeys[0]} showArrow={false} css={addIconCss}>
-          <Icon type="plus" onClick={() => addSubItem(0)} css={iconCss} />
+          <Icon type="plus" onClick={() => addItem(0)} css={iconCss} />
         </Panel>
         {items.map(({ id, title, subItems }, itemIndex) => [
           <Panel
@@ -73,7 +74,11 @@ const Items = ({
             showArrow={false}
             css={addIconCss}
           >
-            <Icon type="plus" onClick={() => addSubItem(0)} css={iconCss} />
+            <Icon
+              type="plus"
+              onClick={() => addItem(itemIndex)}
+              css={iconCss}
+            />
           </Panel>
         ])}
       </Collapse>

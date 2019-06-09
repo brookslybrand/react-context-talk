@@ -1,12 +1,14 @@
-import { createSubItem } from './helpers'
+import { createItem, createSubItem } from './helpers'
 
-export default Array.from({ length: 20 }).map((_, index) => {
-  const id = index.toString()
+const length = 20
+let i = 0
+const items = []
+while (i < length) {
   const subItem1 = createSubItem([])
   const subItem2 = createSubItem([subItem1])
-  return {
-    id,
-    title: `Item ${id}`,
-    subItems: [subItem1, subItem2]
-  }
-})
+  const item = createItem(items, [subItem1, subItem2])
+  items.push(item)
+  i++
+}
+
+export default items

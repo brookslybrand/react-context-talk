@@ -9,6 +9,7 @@ import {
   init,
   setAllExpanded,
   setItemTitle,
+  addItem,
   deleteItem,
   setSubItemAttribute,
   addSubItem,
@@ -24,6 +25,8 @@ const App = () => {
 
   const handleSetItemTitle = itemId => title =>
     dispatch(setItemTitle(itemId)(title))
+
+  const handleAddItem = itemIndex => dispatch(addItem(itemIndex))
 
   const handleDeleteItem = itemIndex => dispatch(deleteItem(itemIndex))
 
@@ -53,6 +56,7 @@ const App = () => {
       <Body
         items={items}
         setItemTitle={handleSetItemTitle}
+        addItem={handleAddItem}
         deleteItem={handleDeleteItem}
         setSubItemTitle={handleSetSubItemTitle}
         setSubItemBody={handleSetSubItemBody}

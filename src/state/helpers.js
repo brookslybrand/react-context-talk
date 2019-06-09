@@ -3,6 +3,16 @@ const findIndexById = arr => idToFind =>
 
 const findMaxId = arr => arr.reduce((max, { id }) => (+id > max ? +id : max), 0)
 
+const createItem = (items, subItems = []) => {
+  const id = String(findMaxId(items) + 1)
+
+  return {
+    id,
+    title: `Item ${id}`,
+    subItems: subItems
+  }
+}
+
 const createSubItem = subItems => {
   const id = String(findMaxId(subItems) + 1)
   return {
@@ -12,4 +22,4 @@ const createSubItem = subItems => {
   }
 }
 
-export { findIndexById, createSubItem }
+export { findIndexById, createItem, createSubItem }

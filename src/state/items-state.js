@@ -1,7 +1,8 @@
-import { findIndexById, createSubItem } from './helpers'
+import { findIndexById, createItem, createSubItem } from './helpers'
 
 const SET_ALL_EXPANDED = 'SET_ALL_EXPANDED'
 const SET_ITEM_TITLE = 'SET_ITEM_TITLE'
+const ADD_ITEM = 'ADD_ITEM'
 const DELETE_ITEM = 'DELETE_ITEM'
 const SET_SUB_ITEM_ATTRIBUTE = 'SET_SUB_ITEM_ATTRIBUTE'
 const ADD_SUB_ITEM = 'ADD_SUB_ITEM'
@@ -29,6 +30,13 @@ const itemsReducer = (items, action) => {
       const item = items[itemIndex]
       const itemsCopy = [...items]
       itemsCopy.splice(itemIndex, 1, { ...item, title })
+      return itemsCopy
+    }
+    case ADD_ITEM: {
+      const { itemIndex } = action
+      const itemsCopy = [...items]
+      const newItem = { ...createItem(itemsCopy), expanded: DEFAULT_EXPANDED }
+      itemsCopy.splice(itemIndex, 0, newItem)
       return itemsCopy
     }
     case DELETE_ITEM: {
@@ -138,6 +146,11 @@ const setItemTitle = itemId => title => ({
   title
 })
 
+const addItem = itemIndex => ({
+  type: ADD_ITEM,
+  itemIndex
+})
+
 const deleteItem = itemIndex => ({
   type: DELETE_ITEM,
   itemIndex
@@ -178,6 +191,7 @@ export {
   init,
   setAllExpanded,
   setItemTitle,
+  addItem,
   deleteItem,
   setSubItemAttribute,
   addSubItem,
