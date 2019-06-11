@@ -27,7 +27,7 @@ const App = () => {
   const handleSetItemTitle = itemId => title =>
     dispatch(setItemTitle(itemId)(title))
 
-  const handleAddItem = itemIndex => dispatch(addItem(itemIndex))
+  const handleAddItem = itemId => after => dispatch(addItem(itemId)(after))
 
   const handleDeleteItem = itemIndex => dispatch(deleteItem(itemIndex))
 

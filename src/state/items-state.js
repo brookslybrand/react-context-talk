@@ -33,10 +33,14 @@ const itemsReducer = (items, action) => {
       return itemsCopy
     }
     case ADD_ITEM: {
-      const { itemIndex } = action
+      const { itemId, after } = action
+      const itemIndex = findIndexById(items)(itemId)
+      // bail if item not found
+      if (itemIndex === -1) return items
       const itemsCopy = [...items]
       const newItem = { ...createItem(itemsCopy), expanded: DEFAULT_EXPANDED }
-      itemsCopy.splice(itemIndex, 0, newItem)
+      // if after === true, add the new index after the item
+      itemsCopy.splice(itemIndex + (after ? 1 : 0), 0, newItem)
       return itemsCopy
     }
     case DELETE_ITEM: {
@@ -146,9 +150,10 @@ const setItemTitle = itemId => title => ({
   title
 })
 
-const addItem = itemIndex => ({
+const addItem = itemId => after => ({
   type: ADD_ITEM,
-  itemIndex
+  itemId,
+  after
 })
 
 const deleteItem = itemIndex => ({
