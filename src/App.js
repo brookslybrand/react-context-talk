@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useState } from 'react'
 
 import Header from 'components/Header'
 import Body from 'components/Body'
@@ -20,6 +20,7 @@ import {
 
 const App = () => {
   const [items, dispatch] = useReducer(itemsReducer, fakeData, init)
+  const [searchTerm, setSearchTerm] = useState('')
 
   const handleSetAllExpanded = expanded => dispatch(setAllExpanded(expanded))
 
@@ -50,11 +51,21 @@ const App = () => {
   const handleToggleSubItemExpanded = itemId => subItemIds =>
     dispatch(toggleSubItemExpanded(itemId)(subItemIds))
 
+  const filteredItems = items.filter(({ title }) =>
+    title.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
   return (
     <div>
-      <Header items={items} setAllExpanded={handleSetAllExpanded} />
-      <Body
+      <Header
         items={items}
+        filteredItems={filteredItems}
+        setAllExpanded={handleSetAllExpanded}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+      />
+      <Body
+        items={filteredItems}
         setItemTitle={handleSetItemTitle}
         addItem={handleAddItem}
         deleteItem={handleDeleteItem}

@@ -1,29 +1,18 @@
-import { useState } from 'react'
 /**@jsx jsx */
 import { jsx, css } from '@emotion/core'
 import { Icon, Input, AutoComplete } from 'antd'
 
-function onSelect(value) {
-  console.log('onSelect', value)
-}
-
-const SearchBar = () => {
-  const [dataSource, setDataSource] = useState([])
-
-  const handleSearch = value => {
-    setDataSource(!value ? [] : [value, value + value, value + value + value])
-  }
-
+const SearchBar = ({ filteredItems, searchTerm, setSearchTerm }) => {
   return (
     <div className="certain-category-search-wrapper" css={completeCss}>
       <AutoComplete
-        dataSource={dataSource}
+        dataSource={filteredItems.map(({ title }) => title)}
         dropdownStyle={{ width: 300 }}
-        onSelect={onSelect}
-        onSearch={handleSearch}
         size="large"
-        placeholder="search by keyword"
+        placeholder="search by title"
         optionLabelProp="value"
+        value={searchTerm}
+        onChange={val => setSearchTerm(val)}
         css={autoCompleteCss}
       >
         <Input

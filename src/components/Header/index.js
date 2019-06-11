@@ -4,7 +4,14 @@ import { jsx, css } from '@emotion/core'
 import SearchBar from './SearchBar'
 import { Affix, Card, Icon } from 'antd'
 
-const Header = ({ expandAll = false, items, setAllExpanded }) => {
+const Header = ({
+  expandAll = false,
+  items,
+  filteredItems,
+  setAllExpanded,
+  searchTerm,
+  setSearchTerm
+}) => {
   // find if anything is expanded
   const someExpanded = items.reduce(
     (someExpanded, { expanded, subItems }) =>
@@ -14,7 +21,11 @@ const Header = ({ expandAll = false, items, setAllExpanded }) => {
   return (
     <Affix>
       <Card css={headerCss}>
-        <SearchBar />
+        <SearchBar
+          filteredItems={filteredItems}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+        />
         <Icon
           type="double-right"
           onClick={() => setAllExpanded(!someExpanded)}
