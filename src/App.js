@@ -1,82 +1,33 @@
-import React, { useReducer, useState } from 'react'
+import React, { useState, Fragment } from 'react'
+import { Menu, Icon } from 'antd'
+import NoContextApp from 'NoContextApp'
 
-import Header from 'components/Header'
-import Body from 'components/Body'
-
-import fakeData from 'state/fake-data'
-import {
-  itemsReducer,
-  init,
-  setAllExpanded,
-  setItemTitle,
-  addItem,
-  deleteItem,
-  setSubItemAttribute,
-  addSubItem,
-  deleteSubItem,
-  toggleItemExpanded,
-  toggleSubItemExpanded
-} from 'state/items-state'
+const NO_CONTEXT_APP = 'NO_CONTEXT_APP'
+const CONTEXT_APP = 'CONTEXT_APP'
 
 const App = () => {
-  const [items, dispatch] = useReducer(itemsReducer, fakeData, init)
-  const [searchTerm, setSearchTerm] = useState('')
+  const [current, setCurrent] = useState(NO_CONTEXT_APP)
 
-  const handleSetAllExpanded = expanded => dispatch(setAllExpanded(expanded))
-
-  const handleSetItemTitle = itemId => title =>
-    dispatch(setItemTitle(itemId)(title))
-
-  const handleAddItem = itemId => after => dispatch(addItem(itemId)(after))
-
-  const handleDeleteItem = itemId => dispatch(deleteItem(itemId))
-
-  const handleSetSubItemTitle = itemId => subItemId => title => {
-    dispatch(setSubItemAttribute(itemId)(subItemId)({ title: title }))
-  }
-
-  const handleSetSubItemBody = itemId => subItemId => body =>
-    dispatch(setSubItemAttribute(itemId)(subItemId)({ body }))
-
-  const handleAddSubItem = itemId => subItemId => after =>
-    dispatch(addSubItem(itemId)(subItemId)(after))
-
-  const handleDeleteSubItem = itemId => subItemId => {
-    dispatch(deleteSubItem(itemId)(subItemId))
-  }
-
-  const handleToggleItemExpanded = itemIds =>
-    dispatch(toggleItemExpanded(itemIds))
-
-  const handleToggleSubItemExpanded = itemId => subItemIds =>
-    dispatch(toggleSubItemExpanded(itemId)(subItemIds))
-
-  const filteredItems = items.filter(({ title }) =>
-    title.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const handleClick = e => setCurrent(e.key)
 
   return (
-    <div>
-      <Header
-        items={items}
-        filteredItems={filteredItems}
-        setAllExpanded={handleSetAllExpanded}
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-      />
-      <Body
-        items={filteredItems}
-        setItemTitle={handleSetItemTitle}
-        addItem={handleAddItem}
-        deleteItem={handleDeleteItem}
-        setSubItemTitle={handleSetSubItemTitle}
-        setSubItemBody={handleSetSubItemBody}
-        addSubItem={handleAddSubItem}
-        deleteSubItem={handleDeleteSubItem}
-        toggleItemExpanded={handleToggleItemExpanded}
-        toggleSubItemExpanded={handleToggleSubItemExpanded}
-      />
-    </div>
+    <Fragment>
+      <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
+        <Menu.Item key={NO_CONTEXT_APP}>
+          <Icon type="dislike" />
+          No Context App
+        </Menu.Item>
+        <Menu.Item key={CONTEXT_APP}>
+          <Icon type="like" />
+          Context App
+        </Menu.Item>
+      </Menu>
+      {current === NO_CONTEXT_APP ? (
+        <NoContextApp />
+      ) : current === CONTEXT_APP ? (
+        <span>Nothing to see here (yet)</span>
+      ) : null}
+    </Fragment>
   )
 }
 
