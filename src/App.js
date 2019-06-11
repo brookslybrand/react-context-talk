@@ -29,7 +29,7 @@ const App = () => {
 
   const handleAddItem = itemId => after => dispatch(addItem(itemId)(after))
 
-  const handleDeleteItem = itemIndex => dispatch(deleteItem(itemIndex))
+  const handleDeleteItem = itemId => dispatch(deleteItem(itemId))
 
   const handleSetSubItemTitle = itemId => subItemId => title => {
     dispatch(setSubItemAttribute(itemId)(subItemId)({ title: title }))
@@ -38,11 +38,11 @@ const App = () => {
   const handleSetSubItemBody = itemId => subItemId => body =>
     dispatch(setSubItemAttribute(itemId)(subItemId)({ body }))
 
-  const handleAddSubItem = itemIndex => subItemIndex =>
-    dispatch(addSubItem(itemIndex)(subItemIndex))
+  const handleAddSubItem = itemId => subItemId => after =>
+    dispatch(addSubItem(itemId)(subItemId)(after))
 
-  const handleDeleteSubItem = itemIndex => subItemIndex => {
-    dispatch(deleteSubItem(itemIndex)(subItemIndex))
+  const handleDeleteSubItem = itemId => subItemId => {
+    dispatch(deleteSubItem(itemId)(subItemId))
   }
 
   const handleToggleItemExpanded = itemIds =>

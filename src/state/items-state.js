@@ -44,7 +44,10 @@ const itemsReducer = (items, action) => {
       return itemsCopy
     }
     case DELETE_ITEM: {
-      const { itemIndex } = action
+      const { itemId } = action
+      const itemIndex = findIndexById(items)(itemId)
+      // bail if item not found
+      if (itemIndex === -1) return items
       const itemsCopy = [...items]
       itemsCopy.splice(itemIndex, 1)
       return itemsCopy
@@ -65,23 +68,35 @@ const itemsReducer = (items, action) => {
       return itemsCopy
     }
     case ADD_SUB_ITEM: {
-      const { itemIndex, subItemIndex } = action
+      const { itemId, subItemId, after } = action
+      const itemIndex = findIndexById(items)(itemId)
+      // bail if item not found
+      if (itemIndex === -1) return items
       const itemsCopy = [...items]
       const item = itemsCopy[itemIndex]
       const subItemsCopy = [...item.subItems]
+      const subItemIndex = findIndexById(subItemsCopy)(subItemId)
       const newSubItem = {
         ...createSubItem(subItemsCopy),
         expanded: DEFAULT_EXPANDED
       }
-      subItemsCopy.splice(subItemIndex, 0, newSubItem)
-      itemsCopy.splice(itemIndex, 1, { ...item, subItems: subItemsCopy })
+      // if after === true, add the new index after the subItem
+      subItemsCopy.splice(subItemIndex + (after ? 1 : 0), 0, newSubItem)
+      itemsCopy.splice(itemIndex, 1, {
+        ...item,
+        subItems: subItemsCopy
+      })
       return itemsCopy
     }
     case DELETE_SUB_ITEM: {
-      const { itemIndex, subItemIndex } = action
+      const { itemId, subItemId } = action
+      const itemIndex = findIndexById(items)(itemId)
+      // bail if item not found
+      if (itemIndex === -1) return items
       const itemsCopy = [...items]
       const item = itemsCopy[itemIndex]
       const subItemsCopy = [...item.subItems]
+      const subItemIndex = findIndexById(subItemsCopy)(subItemId)
       subItemsCopy.splice(subItemIndex, 1)
       itemsCopy.splice(itemIndex, 1, { ...item, subItems: subItemsCopy })
       return itemsCopy
@@ -156,9 +171,9 @@ const addItem = itemId => after => ({
   after
 })
 
-const deleteItem = itemIndex => ({
+const deleteItem = itemId => ({
   type: DELETE_ITEM,
-  itemIndex
+  itemId
 })
 
 const setSubItemAttribute = itemId => subItemId => attribute => ({
@@ -168,16 +183,17 @@ const setSubItemAttribute = itemId => subItemId => attribute => ({
   attribute
 })
 
-const addSubItem = itemIndex => subItemIndex => ({
+const addSubItem = itemId => subItemId => after => ({
   type: ADD_SUB_ITEM,
-  itemIndex,
-  subItemIndex
+  itemId,
+  subItemId,
+  after
 })
 
-const deleteSubItem = itemIndex => subItemIndex => ({
+const deleteSubItem = itemId => subItemId => ({
   type: DELETE_SUB_ITEM,
-  itemIndex,
-  subItemIndex
+  itemId,
+  subItemId
 })
 
 const toggleItemExpanded = itemIds => ({

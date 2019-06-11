@@ -25,6 +25,9 @@ const Items = ({
     addKey(index)
   )
 
+  // if no items return null
+  if (items.length === 0) return null
+
   return (
     <div css={bodyCss}>
       <Collapse
@@ -60,7 +63,7 @@ const Items = ({
                 type="delete"
                 onClick={e => {
                   e.stopPropagation()
-                  deleteItem(itemIndex)
+                  deleteItem(id)
                 }}
               />
             }
@@ -69,8 +72,8 @@ const Items = ({
               subItems={subItems}
               setSubItemTitle={setSubItemTitle(id)}
               setSubItemBody={setSubItemBody(id)}
-              addSubItem={addSubItem(itemIndex)}
-              deleteSubItem={deleteSubItem(itemIndex)}
+              addSubItem={addSubItem(id)}
+              deleteSubItem={deleteSubItem(id)}
               toggleSubItemExpanded={toggleSubItemExpanded(id)}
             />
           </Panel>,

@@ -16,7 +16,16 @@ const SearchBar = ({ filteredItems, searchTerm, setSearchTerm }) => {
         css={autoCompleteCss}
       >
         <Input
-          suffix={<Icon type="search" className="certain-category-icon" />}
+          suffix={
+            <Icon
+              type="close"
+              className="certain-category-icon"
+              onClick={e => {
+                e.stopPropagation()
+                setSearchTerm('')
+              }}
+            />
+          }
         />
       </AutoComplete>
     </div>

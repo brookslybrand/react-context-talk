@@ -24,10 +24,15 @@ const SubItems = ({
       css={collapseCss}
     >
       <Panel key={ADD_ICON_KEY} showArrow={false} css={firstIconCss}>
-        <Icon type="plus" onClick={() => addSubItem(0)} css={iconCss} />
+        <Icon
+          type="plus"
+          // get the first id for the first item
+          onClick={() => addSubItem(subItems[0].id)(false)}
+          css={iconCss}
+        />
       </Panel>
 
-      {subItems.map(({ id, title, body }, subItemIndex) => (
+      {subItems.map(({ id, title, body }) => (
         <Panel
           key={id}
           header={
@@ -44,7 +49,7 @@ const SubItems = ({
               type="delete"
               onClick={e => {
                 e.stopPropagation()
-                deleteSubItem(subItemIndex)
+                deleteSubItem(id)
               }}
             />
           }
@@ -58,7 +63,7 @@ const SubItems = ({
           />
           <Icon
             type="plus"
-            onClick={() => addSubItem(subItemIndex + 1)}
+            onClick={() => addSubItem(id)(true)}
             css={iconCss}
           />
         </Panel>
