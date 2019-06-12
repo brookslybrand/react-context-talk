@@ -1,14 +1,14 @@
-import React, { useState, Fragment } from 'react'
-import { Menu, Icon } from 'antd'
-import NoContextApp from 'NoContextApp'
+import React, { useState, Fragment } from 'react';
+import { Menu, Icon } from 'antd';
+import NoContextApp from 'NoContextApp';
 
-const NO_CONTEXT_APP = 'NO_CONTEXT_APP'
-const CONTEXT_APP = 'CONTEXT_APP'
+const NO_CONTEXT_APP = 'NO_CONTEXT_APP';
+const CONTEXT_APP = 'CONTEXT_APP';
 
 const App = () => {
-  const [current, setCurrent] = useState(NO_CONTEXT_APP)
+  const [current, setCurrent] = useState(NO_CONTEXT_APP);
 
-  const handleClick = e => setCurrent(e.key)
+  const handleClick = e => setCurrent(e.key);
 
   return (
     <Fragment>
@@ -28,7 +28,7 @@ const App = () => {
         <span>Nothing to see here (yet)</span>
       ) : null}
     </Fragment>
-  )
-}
+  );
+};
 
-export default App
+export default App;

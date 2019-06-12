@@ -1,13 +1,13 @@
 /**@jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { Collapse, Input, Icon } from 'antd'
+import { jsx, css } from '@emotion/core';
+import { Collapse, Input, Icon } from 'antd';
 
-import SubItems from './SubItems'
+import SubItems from './SubItems';
 
-import { ADD_ICON_KEY, GRAY } from './constants'
-import { getActiveKeys } from './helpers'
+import { ADD_ICON_KEY, GRAY } from './constants';
+import { getActiveKeys } from './helpers';
 
-const Panel = Collapse.Panel
+const Panel = Collapse.Panel;
 
 const Items = ({
   items,
@@ -23,16 +23,16 @@ const Items = ({
 }) => {
   const addKeys = Array.from({ length: items.length + 1 }).map((_, index) =>
     addKey(index)
-  )
+  );
 
   // if no items return null
-  if (items.length === 0) return null
+  if (items.length === 0) return null;
 
   return (
     <div css={bodyCss}>
       <Collapse
         onChange={ids => {
-          toggleItemExpanded(ids)
+          toggleItemExpanded(ids);
         }}
         css={collapseCss}
         activeKey={getActiveKeys(addKeys)(items)}
@@ -62,8 +62,8 @@ const Items = ({
               <Icon
                 type="delete"
                 onClick={e => {
-                  e.stopPropagation()
-                  deleteItem(id)
+                  e.stopPropagation();
+                  deleteItem(id);
                 }}
               />
             }
@@ -87,10 +87,10 @@ const Items = ({
         ])}
       </Collapse>
     </div>
-  )
-}
+  );
+};
 
-const addKey = index => `${ADD_ICON_KEY}_${index}`
+const addKey = index => `${ADD_ICON_KEY}_${index}`;
 
 const bodyCss = css`
   width: 100%;
@@ -98,13 +98,13 @@ const bodyCss = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 
 const collapseCss = css`
   min-width: 300px;
   width: 50%;
   margin: 1rem 0;
-`
+`;
 
 const addIconCss = css`
   background: white;
@@ -118,17 +118,17 @@ const addIconCss = css`
       padding: 0.5rem !important;
     }
   }
-`
+`;
 const iconCss = css`
   font-size: 24px;
   color: ${GRAY};
   :hover {
     color: #505050;
   }
-`
+`;
 
 const inputCss = css`
   width: auto;
-`
+`;
 
-export default Items
+export default Items;

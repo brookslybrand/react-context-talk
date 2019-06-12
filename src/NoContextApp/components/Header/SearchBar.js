@@ -1,6 +1,6 @@
 /**@jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { Icon, Input, AutoComplete } from 'antd'
+import { jsx, css } from '@emotion/core';
+import { Icon, Input, AutoComplete } from 'antd';
 
 const SearchBar = ({ filteredItems, searchTerm, setSearchTerm }) => {
   return (
@@ -21,24 +21,24 @@ const SearchBar = ({ filteredItems, searchTerm, setSearchTerm }) => {
               type="close"
               className="certain-category-icon"
               onClick={e => {
-                e.stopPropagation()
-                setSearchTerm('')
+                e.stopPropagation();
+                setSearchTerm('');
               }}
             />
           }
         />
       </AutoComplete>
     </div>
-  )
-}
+  );
+};
 
 const completeCss = css`
   width: 400px;
   padding: 1rem 0;
-`
+`;
 
 const autoCompleteCss = css`
   width: 100%;
-`
+`;
 
-export default SearchBar
+export default SearchBar;

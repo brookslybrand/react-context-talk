@@ -5,6 +5,6 @@ const getActiveKeys = alwaysExpandedKeys => items =>
         expanded ? activeKey.concat(id) : activeKey,
       []
     )
-  )
+  );
 
-export { getActiveKeys }
+export { getActiveKeys };

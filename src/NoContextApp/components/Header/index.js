@@ -1,8 +1,8 @@
 /**@jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/core';
 
-import SearchBar from './SearchBar'
-import { Affix, Card, Icon } from 'antd'
+import SearchBar from './SearchBar';
+import { Affix, Card, Icon } from 'antd';
 
 const Header = ({
   expandAll = false,
@@ -17,7 +17,7 @@ const Header = ({
     (someExpanded, { expanded, subItems }) =>
       someExpanded || expanded || subItems.some(({ expanded }) => expanded),
     false
-  )
+  );
   return (
     <Affix>
       <Card css={headerCss}>
@@ -33,8 +33,8 @@ const Header = ({
         />
       </Card>
     </Affix>
-  )
-}
+  );
+};
 
 const headerCss = css`
   width: 100%;
@@ -50,11 +50,11 @@ const headerCss = css`
       margin: 0 0.5rem;
     }
   }
-`
+`;
 
 const expandAllCss = expandAll => css`
   transform: rotate(${!expandAll && '-'}90deg);
   transition: transform 0.24s;
-`
+`;
 
-export default Header
+export default Header;

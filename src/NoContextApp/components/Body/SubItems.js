@@ -1,12 +1,12 @@
 /**@jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { Collapse, Input, Icon } from 'antd'
+import { jsx, css } from '@emotion/core';
+import { Collapse, Input, Icon } from 'antd';
 
-import { ADD_ICON_KEY, GRAY } from './constants'
-import { getActiveKeys } from './helpers'
+import { ADD_ICON_KEY, GRAY } from './constants';
+import { getActiveKeys } from './helpers';
 
-const Panel = Collapse.Panel
-const TextArea = Input.TextArea
+const Panel = Collapse.Panel;
+const TextArea = Input.TextArea;
 
 const SubItems = ({
   subItems,
@@ -48,8 +48,8 @@ const SubItems = ({
             <Icon
               type="delete"
               onClick={e => {
-                e.stopPropagation()
-                deleteSubItem(id)
+                e.stopPropagation();
+                deleteSubItem(id);
               }}
             />
           }
@@ -69,15 +69,15 @@ const SubItems = ({
         </Panel>
       ))}
     </Collapse>
-  )
-}
+  );
+};
 
 const collapseCss = css`
   width: calc(100% - 1px - 1rem);
   margin-left: 1rem;
   display: flex;
   flex-direction: column;
-`
+`;
 
 const firstIconCss = css`
   display: flex;
@@ -85,7 +85,7 @@ const firstIconCss = css`
   > div {
     padding: 0 !important;
   }
-`
+`;
 
 const panelCss = css`
   padding-bottom: 0 !important;
@@ -93,15 +93,15 @@ const panelCss = css`
     display: flex !important;
     flex-direction: column !important;
   }
-`
+`;
 
 const inputCss = css`
   width: auto;
-`
+`;
 
 const textAreaCss = css`
   width: 100%;
-`
+`;
 
 const iconCss = css`
   margin-top: 1rem;
@@ -109,6 +109,6 @@ const iconCss = css`
   :hover {
     color: #505050;
   }
-`
+`;
 
-export default SubItems
+export default SubItems;
