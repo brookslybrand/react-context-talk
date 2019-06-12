@@ -1,6 +1,8 @@
 import React, { useState, Fragment } from 'react';
 import { Menu, Icon } from 'antd';
+
 import NoContextApp from 'NoContextApp';
+import ContextApp from 'ContextApp';
 
 const NO_CONTEXT_APP = 'NO_CONTEXT_APP';
 const CONTEXT_APP = 'CONTEXT_APP';
@@ -25,7 +27,7 @@ const App = () => {
       {current === NO_CONTEXT_APP ? (
         <NoContextApp />
       ) : current === CONTEXT_APP ? (
-        <span>Nothing to see here (yet)</span>
+        <ContextApp />
       ) : null}
     </Fragment>
   );
