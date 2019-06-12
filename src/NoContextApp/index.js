@@ -3,7 +3,7 @@ import React, { useReducer, useState } from 'react';
 import Header from 'NoContextApp/components/Header';
 import Body from 'NoContextApp/components/Body';
 
-import fakeData from 'NoContextApp/state/fake-data';
+import fakeData from 'state/fake-data';
 import {
   itemsReducer,
   init,
@@ -16,7 +16,7 @@ import {
   deleteSubItem,
   toggleItemExpanded,
   toggleSubItemExpanded
-} from 'NoContextApp/state/items-state';
+} from 'state/items-state';
 
 const NoContextApp = () => {
   const [items, dispatch] = useReducer(itemsReducer, fakeData, init);
@@ -66,6 +66,7 @@ const NoContextApp = () => {
       />
       <Body
         items={filteredItems}
+        searchTerm={searchTerm}
         setItemTitle={handleSetItemTitle}
         addItem={handleAddItem}
         deleteItem={handleDeleteItem}

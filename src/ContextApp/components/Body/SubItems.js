@@ -27,7 +27,9 @@ const SubItems = ({
         <Icon
           type="plus"
           // get the first id for the first item
-          onClick={() => addSubItem(subItems[0].id)(false)}
+          onClick={() =>
+            addSubItem(subItems.length ? subItems[0].id : '0')(false)
+          }
           css={iconCss}
         />
       </Panel>

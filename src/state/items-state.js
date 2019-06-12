@@ -35,8 +35,6 @@ const itemsReducer = (items, action) => {
     case ADD_ITEM: {
       const { itemId, after } = action;
       const itemIndex = findIndexById(items)(itemId);
-      // bail if item not found
-      if (itemIndex === -1) return items;
       const itemsCopy = [...items];
       const newItem = { ...createItem(itemsCopy), expanded: DEFAULT_EXPANDED };
       // if after === true, add the new index after the item

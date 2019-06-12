@@ -11,6 +11,7 @@ const Panel = Collapse.Panel;
 
 const Items = ({
   items,
+  searchTerm,
   setItemTitle,
   addItem,
   deleteItem,
@@ -26,7 +27,7 @@ const Items = ({
   );
 
   // if no items return null
-  if (items.length === 0) return null;
+  if (items.length === 0 && searchTerm !== '') return null;
 
   return (
     <div css={bodyCss}>
@@ -41,7 +42,7 @@ const Items = ({
           <Icon
             type="plus"
             // get the first id for the first item
-            onClick={() => addItem(items[0].id)(false)}
+            onClick={() => addItem(items.length ? items[0].id : '0')(false)}
             css={iconCss}
           />
         </Panel>
