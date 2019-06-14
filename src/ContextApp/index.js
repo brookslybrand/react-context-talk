@@ -1,9 +1,9 @@
 import React, { useReducer, useState } from 'react';
 
-import Header from 'NoContextApp/components/Header';
-import Body from 'NoContextApp/components/Body';
+import Header from './components/Header';
+import Body from './components/Body';
 
-import fakeData from 'state/fake-data';
+import fakeData from 'fake-data';
 import {
   itemsReducer,
   init,
@@ -16,7 +16,7 @@ import {
   deleteSubItem,
   toggleItemExpanded,
   toggleSubItemExpanded
-} from 'state/items-state';
+} from './items-state';
 
 const NoContextApp = () => {
   const [items, dispatch] = useReducer(itemsReducer, fakeData, init);

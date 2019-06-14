@@ -8,7 +8,7 @@ const NO_CONTEXT_APP = 'NO_CONTEXT_APP';
 const CONTEXT_APP = 'CONTEXT_APP';
 
 const App = () => {
-  const [current, setCurrent] = useState(NO_CONTEXT_APP);
+  const [current, setCurrent] = useState(CONTEXT_APP);
 
   const handleClick = e => setCurrent(e.key);
 

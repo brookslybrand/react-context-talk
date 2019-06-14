@@ -1,4 +1,4 @@
-import { findIndexById, createItem, createSubItem } from './helpers';
+import { findIndexById, createItem, createSubItem } from 'helpers';
 
 const SET_ALL_EXPANDED = 'SET_ALL_EXPANDED';
 const SET_ITEM_TITLE = 'SET_ITEM_TITLE';
