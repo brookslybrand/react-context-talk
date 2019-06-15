@@ -58,7 +58,6 @@ const Items = ({
                 css={inputCss}
               />
             }
-            onChange={() => console.log('comone ')}
             extra={
               <Icon
                 type="delete"

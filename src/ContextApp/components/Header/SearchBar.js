@@ -2,7 +2,13 @@
 import { jsx, css } from '@emotion/core';
 import { Icon, Input, AutoComplete } from 'antd';
 
-const SearchBar = ({ filteredItems, searchTerm, setSearchTerm }) => {
+import {
+  useSearchTermSetter,
+  useSearchTerm
+} from '../../contexts/search-context';
+
+const SearchBar = ({ filteredItems }) => {
+  const [searchTerm, setSearchTerm] = [useSearchTerm(), useSearchTermSetter()];
   return (
     <div className="certain-category-search-wrapper" css={completeCss}>
       <AutoComplete

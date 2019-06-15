@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer } from 'react';
 
 import Header from './components/Header';
 import Body from './components/Body';
@@ -6,23 +6,19 @@ import Body from './components/Body';
 import fakeData from 'fake-data';
 import {
   itemsReducer,
-  init,
-  setAllExpanded,
   setItemTitle,
   addItem,
   deleteItem,
   setSubItemAttribute,
   addSubItem,
-  deleteSubItem,
-  toggleItemExpanded,
-  toggleSubItemExpanded
+  deleteSubItem
 } from './items-state';
+import { SearchProvider, useSearchTerm } from './contexts/search-context';
+import { ExpandedProvider } from './contexts/expanded-context';
 
-const NoContextApp = () => {
-  const [items, dispatch] = useReducer(itemsReducer, fakeData, init);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const handleSetAllExpanded = expanded => dispatch(setAllExpanded(expanded));
+const App = () => {
+  const [items, dispatch] = useReducer(itemsReducer, fakeData);
+  const searchTerm = useSearchTerm();
 
   const handleSetItemTitle = itemId => title =>
     dispatch(setItemTitle(itemId)(title));
@@ -45,40 +41,34 @@ const NoContextApp = () => {
     dispatch(deleteSubItem(itemId)(subItemId));
   };
 
-  const handleToggleItemExpanded = itemIds =>
-    dispatch(toggleItemExpanded(itemIds));
-
-  const handleToggleSubItemExpanded = itemId => subItemIds =>
-    dispatch(toggleSubItemExpanded(itemId)(subItemIds));
-
   const filteredItems = items.filter(({ title }) =>
     title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div>
-      <Header
-        items={items}
-        filteredItems={filteredItems}
-        setAllExpanded={handleSetAllExpanded}
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-      />
-      <Body
-        items={filteredItems}
-        searchTerm={searchTerm}
-        setItemTitle={handleSetItemTitle}
-        addItem={handleAddItem}
-        deleteItem={handleDeleteItem}
-        setSubItemTitle={handleSetSubItemTitle}
-        setSubItemBody={handleSetSubItemBody}
-        addSubItem={handleAddSubItem}
-        deleteSubItem={handleDeleteSubItem}
-        toggleItemExpanded={handleToggleItemExpanded}
-        toggleSubItemExpanded={handleToggleSubItemExpanded}
-      />
-    </div>
+    <ExpandedProvider items={items}>
+      <div>
+        <Header items={items} filteredItems={filteredItems} />
+        <Body
+          items={filteredItems}
+          searchTerm={searchTerm}
+          setItemTitle={handleSetItemTitle}
+          addItem={handleAddItem}
+          deleteItem={handleDeleteItem}
+          setSubItemTitle={handleSetSubItemTitle}
+          setSubItemBody={handleSetSubItemBody}
+          addSubItem={handleAddSubItem}
+          deleteSubItem={handleDeleteSubItem}
+        />
+      </div>
+    </ExpandedProvider>
   );
 };
 
-export default NoContextApp;
+const ContextApp = () => (
+  <SearchProvider>
+    <App />
+  </SearchProvider>
+);
+
+export default ContextApp;

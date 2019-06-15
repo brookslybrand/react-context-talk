@@ -5,7 +5,11 @@ import { Collapse, Input, Icon } from 'antd';
 import SubItems from './SubItems';
 
 import { ADD_ICON_KEY, GRAY } from './constants';
-import { getActiveKeys } from './helpers';
+import {
+  useExpanded,
+  useExpandedDispatch,
+  setExpandedItems
+} from '../../contexts/expanded-context';
 
 const Panel = Collapse.Panel;
 
@@ -18,10 +22,10 @@ const Items = ({
   setSubItemTitle,
   setSubItemBody,
   addSubItem,
-  deleteSubItem,
-  toggleItemExpanded,
-  toggleSubItemExpanded
+  deleteSubItem
 }) => {
+  const expandedItems = useExpanded();
+  const expandedItemsDispatch = useExpandedDispatch();
   const addKeys = Array.from({ length: items.length + 1 }).map((_, index) =>
     addKey(index)
   );
@@ -33,10 +37,11 @@ const Items = ({
     <div css={bodyCss}>
       <Collapse
         onChange={ids => {
-          toggleItemExpanded(ids);
+          const filteredIds = ids.filter(id => !addKeys.includes(id));
+          expandedItemsDispatch(setExpandedItems(filteredIds));
         }}
         css={collapseCss}
-        activeKey={getActiveKeys(addKeys)(items)}
+        activeKey={addKeys.concat(expandedItems.items)}
       >
         <Panel key={addKeys[0]} showArrow={false} css={addIconCss}>
           <Icon
@@ -58,7 +63,6 @@ const Items = ({
                 css={inputCss}
               />
             }
-            onChange={() => console.log('comone ')}
             extra={
               <Icon
                 type="delete"
@@ -75,7 +79,6 @@ const Items = ({
               setSubItemBody={setSubItemBody(id)}
               addSubItem={addSubItem(id)}
               deleteSubItem={deleteSubItem(id)}
-              toggleSubItemExpanded={toggleSubItemExpanded(id)}
             />
           </Panel>,
           <Panel
