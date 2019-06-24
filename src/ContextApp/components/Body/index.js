@@ -1,3 +1,4 @@
+import { memo } from 'react';
 /**@jsx jsx */
 import { jsx, css } from '@emotion/core';
 import { Collapse, Input, Icon } from 'antd';
@@ -6,6 +7,15 @@ import SubItems from './SubItems';
 
 import { ADD_ICON_KEY, GRAY } from './constants';
 import {
+  useItemsDispatch,
+  setItemTitle,
+  addItem,
+  deleteItem,
+  setSubItemAttribute,
+  addSubItem,
+  deleteSubItem
+} from '../../contexts/items-context';
+import {
   useExpanded,
   useExpandedDispatch,
   setExpandedItems
@@ -13,17 +23,8 @@ import {
 
 const Panel = Collapse.Panel;
 
-const Items = ({
-  items,
-  searchTerm,
-  setItemTitle,
-  addItem,
-  deleteItem,
-  setSubItemTitle,
-  setSubItemBody,
-  addSubItem,
-  deleteSubItem
-}) => {
+const Items = ({ items, searchTerm }) => {
+  const itemsDispatch = useItemsDispatch();
   const expandedItems = useExpanded();
   const expandedItemsDispatch = useExpandedDispatch();
   const addKeys = Array.from({ length: items.length + 1 }).map((_, index) =>
@@ -47,52 +48,82 @@ const Items = ({
           <Icon
             type="plus"
             // get the first id for the first item
-            onClick={() => addItem(items.length ? items[0].id : '0')(false)}
+            onClick={() =>
+              itemsDispatch(addItem(items.length ? items[0].id : '0')(false))
+            }
             css={iconCss}
           />
         </Panel>
-        {items.map(({ id, title, subItems }, itemIndex) => [
-          <Panel
-            key={id}
-            header={
-              <Input
-                placeholder="Add a title"
-                value={title}
-                onClick={e => e.stopPropagation()}
-                onChange={e => setItemTitle(id)(e.target.value)}
-                css={inputCss}
-              />
-            }
-            extra={
-              <Icon
-                type="delete"
-                onClick={e => {
-                  e.stopPropagation();
-                  deleteItem(id);
-                }}
-              />
-            }
-          >
-            <SubItems
-              subItems={subItems}
-              setSubItemTitle={setSubItemTitle(id)}
-              setSubItemBody={setSubItemBody(id)}
-              addSubItem={addSubItem(id)}
-              deleteSubItem={deleteSubItem(id)}
-            />
-          </Panel>,
+        {items.map((item, itemIndex) => [
+          <Item key={item.id} {...item} />,
           <Panel
             key={addKeys[itemIndex + 1]}
             showArrow={false}
             css={addIconCss}
           >
-            <Icon type="plus" onClick={() => addItem(id)(true)} css={iconCss} />
+            <Icon
+              type="plus"
+              onClick={() => itemsDispatch(addItem(item.id)(true))}
+              css={iconCss}
+            />
           </Panel>
         ])}
       </Collapse>
     </div>
   );
 };
+
+// Collapse passes down a function we're never using
+// so some silliness needs to be done for memoization
+// to work properly
+const isSame = (prevProps, nextProps) => {
+  const keys = Object.keys(prevProps);
+  // start out assuming everything is the same
+  // as long as isSame === true, keep testing the props
+  const isSame = keys.reduce((isSame, key) => {
+    if (key === 'expandIcon') return isSame;
+    return isSame && prevProps[key] === nextProps[key];
+  }, true);
+
+  return isSame;
+};
+
+const Item = memo(({ id, title, subItems, ...rest }) => {
+  const itemsDispatch = useItemsDispatch();
+
+  return (
+    <Panel
+      {...rest}
+      key={id}
+      header={
+        <Input
+          placeholder="Add a title"
+          value={title}
+          onClick={e => e.stopPropagation()}
+          onChange={e => itemsDispatch(setItemTitle(id)(e.target.value))}
+          css={inputCss}
+        />
+      }
+      extra={
+        <Icon
+          type="delete"
+          onClick={e => {
+            e.stopPropagation();
+            itemsDispatch(deleteItem(id));
+          }}
+        />
+      }
+    >
+      <SubItems
+        subItems={subItems}
+        setSubItemAttribute={setSubItemAttribute(id)}
+        addSubItem={addSubItem(id)}
+        deleteSubItem={deleteSubItem(id)}
+        itemsDispatch={itemsDispatch}
+      />
+    </Panel>
+  );
+}, isSame);
 
 const addKey = index => `${ADD_ICON_KEY}_${index}`;
 

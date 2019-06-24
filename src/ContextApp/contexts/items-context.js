@@ -1,4 +1,39 @@
+import React, { createContext, useContext, useReducer } from 'react';
+
 import { findIndexById, createItem, createSubItem } from 'helpers';
+
+const ItemsContext = createContext();
+const ItemsDispatchContext = createContext();
+
+export const DEFAULT_EXPANDED = true;
+
+const ItemsProvider = ({ items: originalItems, children }) => {
+  const [items, itemsDispatch] = useReducer(itemsReducer, originalItems);
+
+  return (
+    <ItemsContext.Provider value={items}>
+      <ItemsDispatchContext.Provider value={itemsDispatch}>
+        {children}
+      </ItemsDispatchContext.Provider>
+    </ItemsContext.Provider>
+  );
+};
+
+const useItems = () => {
+  const items = useContext(ItemsContext);
+  if (items === undefined) {
+    throw new Error('useItems must be called within a ItemsProvider');
+  }
+  return items;
+};
+
+const useItemsDispatch = () => {
+  const itemsDispatch = useContext(ItemsDispatchContext);
+  if (itemsDispatch === undefined) {
+    throw new Error('useItemsDispatch must be called within a ItemsProvider');
+  }
+  return itemsDispatch;
+};
 
 const SET_ITEM_TITLE = 'SET_ITEM_TITLE';
 const ADD_ITEM = 'ADD_ITEM';
@@ -129,7 +164,9 @@ const deleteSubItem = itemId => subItemId => ({
 });
 
 export {
-  itemsReducer,
+  ItemsProvider,
+  useItems,
+  useItemsDispatch,
   setItemTitle,
   addItem,
   deleteItem,

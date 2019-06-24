@@ -11,10 +11,10 @@ const TextArea = Input.TextArea;
 
 const SubItems = ({
   subItems,
-  setSubItemTitle,
-  setSubItemBody,
+  setSubItemAttribute,
   addSubItem,
-  deleteSubItem
+  deleteSubItem,
+  itemsDispatch
 }) => {
   const [expandedSubItems, setExpandedSubItems] = useExpandedSubItems(subItems);
 
@@ -30,7 +30,9 @@ const SubItems = ({
           type="plus"
           // get the first id for the first item
           onClick={() =>
-            addSubItem(subItems.length ? subItems[0].id : '0')(false)
+            itemsDispatch(
+              addSubItem(subItems.length ? subItems[0].id : '0')(false)
+            )
           }
           css={iconCss}
         />
@@ -43,7 +45,11 @@ const SubItems = ({
             <Input
               placeholder="Add a title"
               value={title}
-              onChange={e => setSubItemTitle(id)(e.target.value)}
+              onChange={e =>
+                itemsDispatch(
+                  setSubItemAttribute(id)({ title: e.target.value })
+                )
+              }
               onClick={e => e.stopPropagation()}
               css={inputCss}
             />
@@ -53,7 +59,7 @@ const SubItems = ({
               type="delete"
               onClick={e => {
                 e.stopPropagation();
-                deleteSubItem(id);
+                itemsDispatch(deleteSubItem(id));
                 // remove the expanded id
                 setExpandedSubItems(prev =>
                   prev.filter(prevId => prevId !== id)
@@ -66,12 +72,14 @@ const SubItems = ({
           <TextArea
             placeholder="Add a body"
             value={body}
-            onChange={e => setSubItemBody(id)(e.target.value)}
+            onChange={e =>
+              itemsDispatch(setSubItemAttribute(id)({ body: e.target.value }))
+            }
             css={textAreaCss}
           />
           <Icon
             type="plus"
-            onClick={() => addSubItem(id)(true)}
+            onClick={() => itemsDispatch(addSubItem(id)(true))}
             css={iconCss}
           />
         </Panel>
