@@ -40,7 +40,6 @@ function reducers(state = initialState, action) {
 
 import { connect } from 'react-redux';
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 
 import App from '../components/App.js';
