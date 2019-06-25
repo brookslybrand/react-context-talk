@@ -34,4 +34,8 @@ const ContextApp = () => (
   </ItemsProvider>
 );
 
+function test(a, b) {
+  return a + b;
+}
+
 export default ContextApp;
