@@ -1,9 +1,10 @@
-import { useRef, useState, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 /**@jsx jsx */
 import { jsx, css } from '@emotion/core';
 import { Collapse, Input, Icon } from 'antd';
 
 import { ADD_ICON_KEY, GRAY } from './constants';
+
 import { DEFAULT_EXPANDED } from '../../contexts/expanded-context';
 
 const Panel = Collapse.Panel;
@@ -11,17 +12,17 @@ const TextArea = Input.TextArea;
 
 const SubItems = ({
   subItems,
+  itemsDispatch,
   setSubItemAttribute,
   addSubItem,
-  deleteSubItem,
-  itemsDispatch
+  deleteSubItem
 }) => {
   const [expandedSubItems, setExpandedSubItems] = useExpandedSubItems(subItems);
 
   return (
     <Collapse
       bordered={false}
-      activeKey={[ADD_ICON_KEY, ...expandedSubItems]}
+      activeKey={[ADD_ICON_KEY].concat(expandedSubItems)}
       onChange={ids => setExpandedSubItems(ids)}
       css={collapseCss}
     >
@@ -60,10 +61,6 @@ const SubItems = ({
               onClick={e => {
                 e.stopPropagation();
                 itemsDispatch(deleteSubItem(id));
-                // remove the expanded id
-                setExpandedSubItems(prev =>
-                  prev.filter(prevId => prevId !== id)
-                );
               }}
             />
           }

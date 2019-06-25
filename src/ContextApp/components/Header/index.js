@@ -10,9 +10,17 @@ import {
   setAllExpanded
 } from '../../contexts/expanded-context';
 
-const Header = ({ expandAll = false, items, filteredItems }) => {
-  const { someExpanded } = useExpanded();
-  const expandedItemsDispatch = useExpandedDispatch();
+const Header = ({
+  expandAll = false,
+  items,
+  filteredItems,
+  searchTerm,
+  setSearchTerm
+}) => {
+  const [{ someExpanded }, expandedItemsDispatch] = [
+    useExpanded(),
+    useExpandedDispatch()
+  ];
   return (
     <Affix>
       <Card css={headerCss}>

@@ -1,15 +1,15 @@
 import React, {
   createContext,
-  useContext,
   useReducer,
+  useRef,
   useEffect,
-  useRef
+  useContext
 } from 'react';
 
-const ExpandedContext = createContext();
-const ExpandedDispatchContext = createContext();
-
 export const DEFAULT_EXPANDED = true;
+
+const ExpandedContext = createContext('');
+const ExpandedDispatchContext = createContext();
 
 const ExpandedProvider = ({ items, children }) => {
   const oldItemsRef = useRef(items);
@@ -76,7 +76,7 @@ const DELETE_ID = 'DELETE_ID';
 const expandedReducer = (state, action) => {
   switch (action.type) {
     case SET_ALL_EXPANDED: {
-      return expandAll(action.items)(action.expandedItems);
+      return expandAll(action.items)(action.expanded);
     }
     case SET_EXPANDED_ITEMS: {
       const { itemIds } = action;
@@ -93,7 +93,7 @@ const expandedReducer = (state, action) => {
     case DELETE_ID: {
       const { itemId } = action;
       const items = [...state.items];
-      // if the item was expandedItems, remove it
+      // if the item was expanded, remove it
       const itemIndex = items.findIndex(id => id === itemId);
       if (itemIndex !== -1) items.splice(itemIndex, 1);
 
@@ -106,18 +106,18 @@ const expandedReducer = (state, action) => {
   }
 };
 
-const expandAll = items => expandedItems => {
+const expandAll = items => expanded => {
   const itemIds = items.map(({ id }) => id);
   return {
-    someExpanded: expandedItems,
-    items: expandedItems ? itemIds : []
+    someExpanded: expanded,
+    items: expanded ? itemIds : []
   };
 };
 
-const setAllExpanded = items => expandedItems => ({
+const setAllExpanded = items => expanded => ({
   type: SET_ALL_EXPANDED,
   items,
-  expandedItems
+  expanded
 });
 
 const setExpandedItems = itemIds => ({

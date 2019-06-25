@@ -4,9 +4,9 @@ import Header from './components/Header';
 import Body from './components/Body';
 
 import fakeData from 'fake-data';
-import { ItemsProvider, useItems } from './contexts/items-context';
-import { SearchProvider, useSearchTerm } from './contexts/search-context';
+import { SearchTermProvider, useSearchTerm } from './contexts/search-context';
 import { ExpandedProvider } from './contexts/expanded-context';
+import { ItemsProvider, useItems } from './contexts/items-context';
 
 const App = () => {
   const items = useItems();
@@ -26,16 +26,12 @@ const App = () => {
   );
 };
 
-const ContextApp = () => (
-  <ItemsProvider items={fakeData}>
-    <SearchProvider>
+const NoContextApp = () => (
+  <SearchTermProvider>
+    <ItemsProvider items={fakeData}>
       <App />
-    </SearchProvider>
-  </ItemsProvider>
+    </ItemsProvider>
+  </SearchTermProvider>
 );
 
-function test(a, b) {
-  return a + b;
-}
-
-export default ContextApp;
+export default NoContextApp;

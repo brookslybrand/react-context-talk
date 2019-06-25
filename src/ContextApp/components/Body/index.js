@@ -7,6 +7,11 @@ import SubItems from './SubItems';
 
 import { ADD_ICON_KEY, GRAY } from './constants';
 import {
+  useExpanded,
+  useExpandedDispatch,
+  setExpandedItems
+} from '../../contexts/expanded-context';
+import {
   useItemsDispatch,
   setItemTitle,
   addItem,
@@ -15,18 +20,15 @@ import {
   addSubItem,
   deleteSubItem
 } from '../../contexts/items-context';
-import {
-  useExpanded,
-  useExpandedDispatch,
-  setExpandedItems
-} from '../../contexts/expanded-context';
 
 const Panel = Collapse.Panel;
 
 const Items = ({ items, searchTerm }) => {
   const itemsDispatch = useItemsDispatch();
-  const expandedItems = useExpanded();
-  const expandedItemsDispatch = useExpandedDispatch();
+  const [expandedItems, expandedItemsDispatch] = [
+    useExpanded(),
+    useExpandedDispatch()
+  ];
   const addKeys = Array.from({ length: items.length + 1 }).map((_, index) =>
     addKey(index)
   );
@@ -54,8 +56,13 @@ const Items = ({ items, searchTerm }) => {
             css={iconCss}
           />
         </Panel>
-        {items.map((item, itemIndex) => [
-          <Item key={item.id} {...item} />,
+        {items.map(({ id, title, subItems }, itemIndex) => [
+          <Item
+            id={id}
+            title={title}
+            subItems={subItems}
+            itemsDispatch={itemsDispatch}
+          />,
           <Panel
             key={addKeys[itemIndex + 1]}
             showArrow={false}
@@ -63,7 +70,7 @@ const Items = ({ items, searchTerm }) => {
           >
             <Icon
               type="plus"
-              onClick={() => itemsDispatch(addItem(item.id)(true))}
+              onClick={() => itemsDispatch(addItem(id)(true))}
               css={iconCss}
             />
           </Panel>
@@ -88,9 +95,7 @@ const isSame = (prevProps, nextProps) => {
   return isSame;
 };
 
-const Item = memo(({ id, title, subItems, ...rest }) => {
-  const itemsDispatch = useItemsDispatch();
-
+const Item = memo(({ id, title, subItems, itemsDispatch, ...rest }) => {
   return (
     <Panel
       {...rest}
@@ -116,10 +121,10 @@ const Item = memo(({ id, title, subItems, ...rest }) => {
     >
       <SubItems
         subItems={subItems}
+        itemsDispatch={itemsDispatch}
         setSubItemAttribute={setSubItemAttribute(id)}
         addSubItem={addSubItem(id)}
         deleteSubItem={deleteSubItem(id)}
-        itemsDispatch={itemsDispatch}
       />
     </Panel>
   );

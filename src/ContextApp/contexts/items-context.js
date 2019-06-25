@@ -1,11 +1,9 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useReducer, useContext } from 'react';
 
 import { findIndexById, createItem, createSubItem } from 'helpers';
 
 const ItemsContext = createContext();
 const ItemsDispatchContext = createContext();
-
-export const DEFAULT_EXPANDED = true;
 
 const ItemsProvider = ({ items: originalItems, children }) => {
   const [items, itemsDispatch] = useReducer(itemsReducer, originalItems);
@@ -22,7 +20,7 @@ const ItemsProvider = ({ items: originalItems, children }) => {
 const useItems = () => {
   const items = useContext(ItemsContext);
   if (items === undefined) {
-    throw new Error('useItems must be called within a ItemsProvider');
+    throw new Error('useItems must be called inside of an ItemsProvider');
   }
   return items;
 };
@@ -30,7 +28,9 @@ const useItems = () => {
 const useItemsDispatch = () => {
   const itemsDispatch = useContext(ItemsDispatchContext);
   if (itemsDispatch === undefined) {
-    throw new Error('useItemsDispatch must be called within a ItemsProvider');
+    throw new Error(
+      'useItemsDispatch must be called inside of an ItemsProvider'
+    );
   }
   return itemsDispatch;
 };

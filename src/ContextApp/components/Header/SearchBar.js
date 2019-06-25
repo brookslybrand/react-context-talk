@@ -3,8 +3,8 @@ import { jsx, css } from '@emotion/core';
 import { Icon, Input, AutoComplete } from 'antd';
 
 import {
-  useSearchTermSetter,
-  useSearchTerm
+  useSearchTerm,
+  useSearchTermSetter
 } from '../../contexts/search-context';
 
 const SearchBar = ({ filteredItems }) => {
